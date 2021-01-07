@@ -1,0 +1,43 @@
+<div
+  fxLayout="column"
+  fxFlexAlign="center"
+  style="width: 100%; padding: 5% 10% 5% 10%"
+>
+  <h2>Adicionar pessoa</h2>
+
+  <form fxLayout fxLayoutGap="32px" [formGroup]="form" (submit)="create()">
+    <mat-form-field style="width: 100%">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="João" formControlName="name" />
+    </mat-form-field>
+
+    <button
+      style="width: 150px; height: 50px"
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Adicionar
+    </button>
+  </form>
+
+  <h2 style="margin-top: 32px">Pessoas</h2>
+
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSize]=20></mat-paginator>
+</div>

@@ -1,0 +1,23 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar>Gestão de despesas</mat-toolbar>
+    <mat-nav-list>
+      <ng-container *ngFor="let navItem of navItens">
+        <a mat-list-item [routerLink]="navItem.route">
+          <mat-icon mat-list-icon>{{ navItem.icon }}</mat-icon>
+          <h4 mat-line>{{ navItem.name }}</h4>
+        </a>
+      </ng-container>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content fxLayout style="background-color: white;">
+      <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,92 @@
+<div
+  fxLayout="column"
+  fxFlexAlign="center"
+  style="width: 100%; padding: 5% 10% 5% 10%"
+>
+  <form
+    fxLayout="column"
+    fxLayoutGap="32px"
+    fxLayoutAlign="center stretch"
+    [formGroup]="form"
+    (submit)="create()"
+  >
+    <h2>Pessoa</h2>
+
+    <mat-form-field style="width: 100%">
+      <mat-label>Selecione uma pessoa</mat-label>
+      <mat-select formControlName="personId">
+        <ng-container *ngFor="let person of persons$ | async">
+          <mat-option [value]="person.id">{{ person.name }}</mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+
+    <h2 style="margin-top: 32px">Adicionar gasto</h2>
+
+    <div fxLayout fxLayoutGap="32px" fxLayoutAlign="start center">
+      <mat-form-field style="width: 100%">
+        <mat-label>Descrição</mat-label>
+        <input matInput placeholder="João" formControlName="descricao" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Valor</mat-label>
+        <input matInput placeholder="0,00" [unmask]=true [imask]=valueMask  formControlName="valor" />
+      </mat-form-field>
+
+      <mat-checkbox formControlName="tags">Tags</mat-checkbox>
+
+      <button
+        style="width: 150px; height: 50px"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Adicionar
+      </button>
+    </div>
+  </form>
+
+  <h2 style="margin-top: 32px">Gastos</h2>
+
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dataTransacao">
+      <mat-header-cell *matHeaderCellDef> Data transação </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.dataTransacao | date: "YYYY-MM-dd HH:mm:ss" }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="descricao">
+      <mat-header-cell *matHeaderCellDef> Descrição </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.descricao }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="valor">
+      <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.valor | currency: "BRL": "R$ " }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="tags">
+      <mat-header-cell *matHeaderCellDef> Tags </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-icon>{{
+          element.tags ? "check_box" : "check_box_outline_blank"
+        }}</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSize]=20></mat-paginator>
+</div>
